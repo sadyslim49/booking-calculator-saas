@@ -3,7 +3,22 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, Trash2 } from 'lucide-react';
+import {
+  PlusCircle,
+  Trash2,
+  Refrigerator,
+  Archive,
+  CookingPot,
+  Umbrella,
+  GlassWater,
+  Dog,
+  Minus,
+  Warehouse,
+  AppWindow,
+  WashingMachine,
+  RectangleVertical,
+  ListChecks // Fallback icon, or if needed
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const FieldSettings = ({ field, updateField, addOption, updateOption, removeOption, disabled }) => {
@@ -60,6 +75,33 @@ const FieldSettings = ({ field, updateField, addOption, updateOption, removeOpti
           <Button variant="outline" size="sm" onClick={() => addOption(field.id)} disabled={disabled}>
             <PlusCircle className="w-4 h-4 mr-2" />Add Option
           </Button>
+        </div>
+      )}
+
+      {field.type === 'additional-cleaning-services' && field.options && (
+        <div className="space-y-2">
+          <Label>Select Services</Label>
+          {field.options.map((option) => (
+            <div key={option.id} className="flex items-center space-x-3">
+              <Checkbox
+                id={`${field.id}-${option.id}`}
+                checked={!!(field.selectedOptions && field.selectedOptions[option.id])}
+                onCheckedChange={(checked) => {
+                  const newSelectedOptions = {
+                    ...(field.selectedOptions || {}),
+                    [option.id]: Boolean(checked),
+                  };
+                  updateField(field.id, { selectedOptions: newSelectedOptions });
+                }}
+                disabled={disabled}
+              />
+              {/* The option.icon is already a React element from fieldTypes.jsx */}
+              {option.icon}
+              <Label htmlFor={`${field.id}-${option.id}`} className="font-normal">
+                {option.name}
+              </Label>
+            </div>
+          ))}
         </div>
       )}
 
